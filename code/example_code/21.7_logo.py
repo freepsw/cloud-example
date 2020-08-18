@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*- 
 import io
-from google.cloud import vision_v1p3beta1 as vision
+import os
+
+# Imports the Google Cloud client library
+from google.cloud import vision
+from google.cloud.vision import types
 
 client = vision.ImageAnnotatorClient()
 
-content = io.open('/Users/jungwoon/Desktop/logo.jpg', 'rb').read()
+content = io.open('./1200px-SK_logo.svg.png', 'rb').read()
 image = vision.types.Image(content=content)
 
 response = client.logo_detection(image=image)

@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*- 
 import io
-from google.cloud import vision_v1p3beta1 as vision
+import os
+
+# Imports the Google Cloud client library
+from google.cloud import vision
+from google.cloud.vision import types
 
 # vision api 인스턴스를 생성합니다.
 client = vision.ImageAnnotatorClient()
 
 # 분석하고자 하는 그림 파일을 불러옵니다.
-content = io.open('/Users/jungwoon/Desktop/document.png', 'rb').read()
+content = io.open('./4519442_lI7.jpg', 'rb').read()
 
 # types.Image에 위에서 열어온 그림 파일을 지정합니다.
 image = vision.types.Image(content=content)

@@ -1,5 +1,7 @@
-from google.cloud import language_v1
-from google.cloud.language_v1 import enums
+# -*- coding: utf-8 -*- 
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
 
 # 구문분석을 위한 text
 content = '''When I was young, there was an amazing publication called The Whole Earth Catalog, which was one of the 
@@ -9,7 +11,7 @@ publishing, so it was all made with typewriters, scissors and Polaroid cameras. 
 paperback form, 35 years before Google came along: It was idealistic, and overflowing with neat tools and great 
 notions. '''
 
-client = language_v1.LanguageServiceClient()
+client = language.LanguageServiceClient()
 
 # content에 분석을 위한 text를 넣습니다.
 document = {'type': enums.Document.Type.PLAIN_TEXT, 'content': content}
