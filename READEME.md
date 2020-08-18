@@ -67,3 +67,7 @@ kubectl 1.15.11
 NAME               ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
 gcloud-sdk-client  us-central1-a  n1-standard-1               10.128.0.10  34.69.189.78  RUNNING
 ```
+
+## Test Code 
+- 구글 클라우드 플랫폼 뽀개기 코드 활용
+    - https://github.com/bjpublic/googlecloud
