@@ -184,7 +184,7 @@ Google Cloud Platform
 ```
 
 - cloud function 
-'''python
+``` python
 # -*- coding: utf-8 -*- 
 import io
 import os
@@ -209,7 +209,7 @@ def detect_text(event, context):
     # 위에서 만든 쿼리로 빅쿼리에 실행
     bigquery_client.query(query)
 
-'''
+```
 
 - requirements.txt
 ```     
