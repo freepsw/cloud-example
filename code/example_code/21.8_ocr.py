@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*- 
+# from google.cloud import vision_v1p3beta1 as vision
 import io
-from google.cloud import vision_v1p3beta1 as vision
+import os
+from google.cloud import vision
 
 
 client = vision.ImageAnnotatorClient()
 
-content = io.open('/Users/jungwoon/Desktop/a.jpeg', 'rb').read()
+content = io.open('./google-cloud-platform.jpg', 'rb').read()
 image = vision.types.Image(content=content)
 
 response = client.text_detection(image=image)

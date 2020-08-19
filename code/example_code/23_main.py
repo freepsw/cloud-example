@@ -1,4 +1,9 @@
-from google.cloud import vision_v1p3beta1 as vision
+# -*- coding: utf-8 -*- 
+import io
+import os
+from google.cloud import vision
+from google.cloud.vision import types
+
 from google.cloud import bigquery
 
 def detect_text(event, context):
@@ -12,7 +17,7 @@ def detect_text(event, context):
     response = vision_client.text_detection({'source': {'image_uri': bucket_uri}}).full_text_annotation.text
 
     # 위에서 얻은 GCS URI와 텍스트를 빅쿼리에 넣어주는 쿼리 작성
-    query = """insert into `snappy-helper-239504.functions.ocr` (image_path, detect_text) values ('{bucket}', '''{text}''');""".format(bucket=bucket_uri, text=response)
+    query = """insert into `firm-capsule-256012.function_dataset.image_text` (image_url, detect_text) values ('{bucket}', '''{text}''');""".format(bucket=bucket_uri, text=response)
 
     # 위에서 만든 쿼리로 빅쿼리에 실행
     bigquery_client.query(query)

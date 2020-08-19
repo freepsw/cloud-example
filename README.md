@@ -133,6 +133,9 @@ Sentiment: 0.600000023842, 0.600000023842
 > wget https://news.kbs.co.kr/data/news/2020/08/18/4519442_lI7.jpg
 
 > pip install google-cloud-vision
+
+# 이미지에서 문자열의 위치와 문자열을 추출한다.
+# https://cloud.google.com/vision/docs/fulltext-annotations?hl=ko  
 > python 21.2_document.py
 Block confidence: 0.990000009537
 
@@ -151,20 +154,73 @@ Word text: UE (confidence: 0.990000009537)
         Symbol: E (confidence: 0.990000009537)
 
 
-
+# 지역별로 중요한 랜드마크 이름을 추출한다. 
 > wget https://www.agoda.com/wp-content/uploads/2018/10/Experience-Seoul_landmarks_Heunginjimun-Gate_Dongdaemun.jpg
 > python 21.5_landmark.py 
 mid: "/m/03hvjr"
 description: "Heunginjimun"
 score: 0.785608172417
 
-
+# 유명한 회사/브랜드의 로고를 추출한다.
 > wget https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/SK_logo.svg/1200px-SK_logo.svg.png
 > python 21.7_logo.py 
 mid: "/m/04dj27"
 description: "SK Group"
 score: 0.994797587395
+
+# Extract the text from image
+> https://cdn01.bespinglobal.com/wp-content/uploads/2018/06/google-cloud-platform.jpg
+> python 21.8_ocr.py 
+Google Cloud Platform
+
 ```
+
+
+## 7. Cloud Function + Vision API + BigQuery 
+
+```
+> cd cloud-example/code/example_code
+> https://cdn01.bespinglobal.com/wp-content/uploads/2018/06/google-cloud-platform.jpg
+```
+
+- cloud function 
+'''python
+# -*- coding: utf-8 -*- 
+import io
+import os
+from google.cloud import vision
+from google.cloud.vision import types
+
+from google.cloud import bigquery
+
+def detect_text(event, context):
+    vision_client = vision.ImageAnnotatorClient()
+    bigquery_client = bigquery.Client()
+
+    # GCS 이벤트로부터 전달 받은 버킷 이름과 네임을 이용하여 GCS URI 만드는 부분
+    bucket_uri = 'gs://{bucket}/{file}'.format(bucket=event['bucket'], file=event['name'])
+
+    # Vision API에 GCS URI를 넘겨서 TEXT 추출하여 가져오기
+    response = vision_client.text_detection({'source': {'image_uri': bucket_uri}}).full_text_annotation.text
+
+    # 위에서 얻은 GCS URI와 텍스트를 빅쿼리에 넣어주는 쿼리 작성
+    query = """insert into `firm-capsule-256012.function_dataset.image_text` (image_url, detect_text) values ('{bucket}', '''{text}''');""".format(bucket=bucket_uri, text=response)
+
+    # 위에서 만든 쿼리로 빅쿼리에 실행
+    bigquery_client.query(query)
+
+'''
+
+- requirements.txt
+```     
+google-cloud-vision==1.0.0
+google-cloud-bigquery==1.27.2
+```
+- BigQuery SQL 구문
+```sql
+select * from firm-capsule-256012.function_dataset.image_text
+```
+
 
 ## [ETC] 
 ### Test Code 
