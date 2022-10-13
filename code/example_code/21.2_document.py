@@ -4,7 +4,7 @@ import os
 
 # Imports the Google Cloud client library
 from google.cloud import vision
-from google.cloud.vision import types
+
 
 # vision api 인스턴스를 생성합니다.
 client = vision.ImageAnnotatorClient()
@@ -13,7 +13,7 @@ client = vision.ImageAnnotatorClient()
 content = io.open('./4519442_lI7.jpg', 'rb').read()
 
 # types.Image에 위에서 열어온 그림 파일을 지정합니다.
-image = vision.types.Image(content=content)
+image = vision.Image(content=content)
 
 # document_text_detection을 호출하면 해당 분석 결과를 불러옵니다.
 response = client.document_text_detection(image=image)

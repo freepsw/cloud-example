@@ -8,7 +8,7 @@ from google.cloud import vision
 client = vision.ImageAnnotatorClient()
 
 content = io.open('./google-cloud-platform.jpg', 'rb').read()
-image = vision.types.Image(content=content)
+image = vision.Image(content=content)
 
 response = client.text_detection(image=image)
 

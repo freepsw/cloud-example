@@ -73,12 +73,14 @@ gcloud-sdk-client  us-central1-a  n1-standard-1               10.128.0.10  34.69
 
 
 ## 4. Cloud Translate API 활용
-```
-> sudo yum -y install python-pip
-> sudo pip install --upgrade pip
+'''
+> sudo yum install -y python3-virtualenv
+> python3 -m venv sandbox
+> source sandbox/bin/activate
+> pip install --upgrade pip
 > pip install google-cloud-translate
 > pip install --upgrade google-cloud-translate
-```
+'''
 
 ### Git code 다운로드 
 ```
@@ -105,26 +107,115 @@ print(result['translatedText'])
 
 - run python 
 ```
-> python code/translate_api.py 
-こんにち
+##  영어 >> 일본어 번역 
+> cd ~
+> python ~/cloud-example/code/translate_api.py
+こんにちは
+
+## 어느 나라 언어인지 판단
+> cd ~
+> python cloud-example/code/example_code/17_detect.py 
+[{'confidence': 1, 'language': 'ko', 'input': '안녕하세요. GCP 입니다.'}]
 
 
-> cd cloud-example/code/example_code
-> python 17_detect.py 
+## 번역을 지원하는 언어 목록 제공 
+> python cloud-example/code/example_code/17_get.py
+{'language': 'af', 'name': 'Afrikaans'}
+{'language': 'ak', 'name': 'Akan'}
+{'language': 'sq', 'name': 'Albanian'}
+{'language': 'am', 'name': 'Amharic'}
+{'language': 'ar', 'name': 'Arabic'}
+{'language': 'hy', 'name': 'Armenian'}
+{'language': 'as', 'name': 'Assamese'}
+{'language': 'ay', 'name': 'Aymara'}
+{'language': 'az', 'name': 'Azerbaijani'}
+....
 
-> python 17_get.py
-
-> python 17_translate.py 
+## 영어 문장을 한국어로 번역 
+> python cloud-example/code/example_code/17_translate.py 
+{'translatedText': 'Cuando solicita una traducción de la API de Cloud Translation, el texto se traduce mediante un modelo de traducción automática neuronal artificial (NMT) de forma predeterminada. Si el modelo NMT no es compatible con la combinación de idiomas de traducción solicitada, se utiliza el modelo de traducción automática basada en frases (PBMT).', 'detectedSourceLanguage': 'ko', 'input': 'Cloud Translation API에 번역을 요청하면 기본적으로 인공신경망 기계 번역(NMT) 모델을 사용하여 텍스트가 번역됩니다. 요청한 번역 언어 조합에 NMT 모델이 지원되지 않는 경우에는 구문 기반 기계 번역(PBMT) 모델이 사용됩니다.'}
 ```
 
 
 ## 5. Cloud Natural Language API 사용 
 ```
 > pip install google-cloud-language
-> cd cloud-example/code/example_code
-> python 18_basic.py 
+> python cloud-example/code/example_code/18_basic.py 
 Text: Hello, world!
 Sentiment: 0.600000023842, 0.600000023842
+
+## 문장에서 앤터티 추출 
+> gcloud ml language \
+    analyze-entities \
+    --content="Michelangelo \
+    Caravaggio, Italian painter, \
+    is known for \
+    'The Calling of Saint Matthew' \
+    ."
+
+{
+  "entities": [
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 0,
+            "content": "Michelangelo     Caravaggio"
+          },
+          "type": "PROPER"
+        },
+        {
+          "text": {
+            "beginOffset": 37,
+            "content": "painter"
+          },
+          "type": "COMMON"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/020bg",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Caravaggio"
+      },
+      "name": "Michelangelo Caravaggio",
+      "salience": 0.82904786,
+      "type": "PERSON"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 29,
+            "content": "Italian"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {},
+      "name": "Italian",
+      "salience": 0.13981608,
+      "type": "LOCATION"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 68,
+            "content": "The Calling of Saint Matthew"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/085_p7",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/The_Calling_of_St_Matthew"
+      },
+      "name": "The Calling of Saint Matthew",
+      "salience": 0.031136045,
+      "type": "EVENT"
+    }
+  ],
+  "language": "en"
+}
 ```
 
 ## 6. Vision API 사용 
@@ -137,7 +228,7 @@ Sentiment: 0.600000023842, 0.600000023842
 
 # 이미지에서 문자열의 위치와 문자열을 추출한다.
 # https://cloud.google.com/vision/docs/fulltext-annotations?hl=ko  
-> python 21.2_document.py
+> python cloud-example/code/example_code/21.2_document.py
 Block confidence: 0.990000009537
 
 Paragraph confidence: 0.990000009537
@@ -157,23 +248,48 @@ Word text: UE (confidence: 0.990000009537)
 
 # 지역별로 중요한 랜드마크 이름을 추출한다. 
 > wget https://www.agoda.com/wp-content/uploads/2018/10/Experience-Seoul_landmarks_Heunginjimun-Gate_Dongdaemun.jpg
-> python 21.5_landmark.py 
+> python cloud-example/code/example_code/21.5_landmark.py 
 mid: "/m/03hvjr"
 description: "Heunginjimun"
 score: 0.785608172417
 
 # 유명한 회사/브랜드의 로고를 추출한다.
 > wget https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/SK_logo.svg/1200px-SK_logo.svg.png
-> python 21.7_logo.py 
+> python cloud-example/code/example_code/21.7_logo.py 
 mid: "/m/04dj27"
 description: "SK Group"
 score: 0.994797587395
 
 # Extract the text from image
-> https://cdn01.bespinglobal.com/wp-content/uploads/2018/06/google-cloud-platform.jpg
-> python 21.8_ocr.py 
+> wget https://image-en.bespinglobal.com/wp-content/uploads/2018/06/google-cloud-platform.jpg
+> python cloud-example/code/example_code/21.8_ocr.py 
 Google Cloud Platform
 
+Block confidence: 0.0
+
+Paragraph confidence: 0.0
+Word text: Google (confidence: 0.0)
+        Symbol: G (confidence: 0.0)
+        Symbol: o (confidence: 0.0)
+        Symbol: o (confidence: 0.0)
+        Symbol: g (confidence: 0.0)
+        Symbol: l (confidence: 0.0)
+        Symbol: e (confidence: 0.0)
+Word text: Cloud (confidence: 0.0)
+        Symbol: C (confidence: 0.0)
+        Symbol: l (confidence: 0.0)
+        Symbol: o (confidence: 0.0)
+        Symbol: u (confidence: 0.0)
+        Symbol: d (confidence: 0.0)
+Word text: Platform (confidence: 0.0)
+        Symbol: P (confidence: 0.0)
+        Symbol: l (confidence: 0.0)
+        Symbol: a (confidence: 0.0)
+        Symbol: t (confidence: 0.0)
+        Symbol: f (confidence: 0.0)
+        Symbol: o (confidence: 0.0)
+        Symbol: r (confidence: 0.0)
+        Symbol: m (confidence: 0.0)
 ```
 
 
@@ -181,7 +297,7 @@ Google Cloud Platform
 
 ```
 > cd cloud-example/code/example_code
-> https://cdn01.bespinglobal.com/wp-content/uploads/2018/06/google-cloud-platform.jpg
+> wget https://image-en.bespinglobal.com/wp-content/uploads/2018/06/google-cloud-platform.jpg
 ```
 
 - cloud function 
@@ -190,7 +306,7 @@ Google Cloud Platform
 import io
 import os
 from google.cloud import vision
-from google.cloud.vision import types
+# from google.cloud.vision import types
 
 from google.cloud import bigquery
 
@@ -205,7 +321,8 @@ def detect_text(event, context):
     response = vision_client.text_detection({'source': {'image_uri': bucket_uri}}).full_text_annotation.text
 
     # 위에서 얻은 GCS URI와 텍스트를 빅쿼리에 넣어주는 쿼리 작성
-    query = """insert into `firm-capsule-256012.function_dataset.image_text` (image_url, detect_text) values ('{bucket}', '''{text}''');""".format(bucket=bucket_uri, text=response)
+    # projct-id는 본인의 project id로 변경한다. 
+    query = """insert into `project-id.function_dataset.image_text` (image_url, detect_text) values ('{bucket}', '''{text}''');""".format(bucket=bucket_uri, text=response)
 
     # 위에서 만든 쿼리로 빅쿼리에 실행
     bigquery_client.query(query)
