@@ -73,14 +73,14 @@ gcloud-sdk-client  us-central1-a  n1-standard-1               10.128.0.10  34.69
 
 
 ## 4. Cloud Translate API 활용
-'''
+```
 > sudo yum install -y python3-virtualenv
 > python3 -m venv sandbox
 > source sandbox/bin/activate
 > pip install --upgrade pip
 > pip install google-cloud-translate
 > pip install --upgrade google-cloud-translate
-'''
+```
 
 ### Git code 다운로드 
 ```
