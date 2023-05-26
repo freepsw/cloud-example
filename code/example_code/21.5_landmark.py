@@ -7,7 +7,7 @@ from google.cloud import vision
 
 client = vision.ImageAnnotatorClient()
 
-content = io.open('./Experience-Seoul_landmarks_Heunginjimun-Gate_Dongdaemun.jpg', 'rb').read()
+content = io.open('./Eiffel-Tower-Paris.jpg', 'rb').read()
 image = vision.Image(content=content)
 
 response = client.landmark_detection(image=image)

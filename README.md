@@ -247,7 +247,8 @@ Word text: UE (confidence: 0.990000009537)
 
 
 # 지역별로 중요한 랜드마크 이름을 추출한다. 
-> wget https://www.agoda.com/wp-content/uploads/2018/10/Experience-Seoul_landmarks_Heunginjimun-Gate_Dongdaemun.jpg
+<!-- > wget https://www.agoda.com/wp-content/uploads/2018/10/Experience-Seoul_landmarks_Heunginjimun-Gate_Dongdaemun.jpg -->
+> wget https://cdn.britannica.com/83/99583-050-792F1327/Eiffel-Tower-Paris.jpg
 > python cloud-example/code/example_code/21.5_landmark.py 
 mid: "/m/03hvjr"
 description: "Heunginjimun"
